@@ -1,19 +1,19 @@
 import { UniqueEntityId } from '@/core/entities/unique-entity-id'
 import { makeAnswer } from 'test/factories/make-answer'
-import { InMemoryAnswerRepository } from 'test/repositories/in-memory-anwsers-repository'
+import { InMemoryAnswersRepository } from 'test/repositories/in-memory-anwsers-repository'
 import { InMemoryQuestionsRepository } from 'test/repositories/in-memory-questions-repository'
 import { ChooseQuestionBestAnswerUseCase } from './choose-question-best-answer'
 import { makeQuestion } from 'test/factories/make-questions'
 
 let inMemoryQuestionRepository: InMemoryQuestionsRepository
-let inMemoryAnswerRepository: InMemoryAnswerRepository
+let inMemoryAnswerRepository: InMemoryAnswersRepository
 // system in memory test
 let sut: ChooseQuestionBestAnswerUseCase
 
 describe('Choose question best Answer', () => {
   beforeEach(() => {
     inMemoryQuestionRepository = new InMemoryQuestionsRepository()
-    inMemoryAnswerRepository = new InMemoryAnswerRepository()
+    inMemoryAnswerRepository = new InMemoryAnswersRepository()
 
     sut = new ChooseQuestionBestAnswerUseCase(
       inMemoryQuestionRepository,

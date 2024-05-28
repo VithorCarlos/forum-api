@@ -35,8 +35,6 @@ export class ChooseQuestionBestAnswerUseCase {
       throw new Error('Question not found')
     }
 
-    console.log({ authorId })
-    console.log(answer.authorId.toString())
     if (authorId !== answer.authorId.toString()) {
       throw new Error('Not allowed')
     }

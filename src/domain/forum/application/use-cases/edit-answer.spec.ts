@@ -1,15 +1,15 @@
 import { EditAnswerUseCase } from './edit-answer'
 import { UniqueEntityId } from '@/core/entities/unique-entity-id'
 import { makeAnswer } from 'test/factories/make-answer'
-import { InMemoryAnswerRepository } from 'test/repositories/in-memory-anwsers-repository'
+import { InMemoryAnswersRepository } from 'test/repositories/in-memory-anwsers-repository'
 
-let inMemoryAnswerRepository: InMemoryAnswerRepository
+let inMemoryAnswerRepository: InMemoryAnswersRepository
 // system in memory test
 let sut: EditAnswerUseCase
 
 describe('Edit answer', () => {
   beforeEach(() => {
-    inMemoryAnswerRepository = new InMemoryAnswerRepository()
+    inMemoryAnswerRepository = new InMemoryAnswersRepository()
     sut = new EditAnswerUseCase(inMemoryAnswerRepository)
   })
 
