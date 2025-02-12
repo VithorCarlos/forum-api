@@ -30,13 +30,13 @@ describe("Create question", () => {
 
     await inMemoryQuestionsRepository.create(newQuestion);
 
-    await sut.execute({
+    const result = await sut.execute({
       slug: "title-a-new-question",
     });
 
-    expect(inMemoryQuestionsRepository.items[0].slug.value).toEqual(
-      "title-a-new-question"
-    );
+    expect(result.value).toMatchObject({
+      question: expect.objectContaining({ title: newQuestion.title }),
+    });
   });
 
   it("should not be able to get a question by slug", async () => {
