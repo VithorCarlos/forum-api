@@ -3,7 +3,7 @@ import { Question } from "../../enterprise/entities/question";
 import { QuestionsRepository } from "../repositories/questions-repository";
 import { NotAllowedError } from "./error/not-allowed-error";
 import { ResourceNotFoundError } from "./error/resource-not-found-error";
-import { QuestionAttachmentRepository } from "../repositories/question-attachments-repository";
+import { QuestionAttachmentsRepository } from "../repositories/question-attachments-repository";
 import { QuestionAttachmentList } from "../../enterprise/entities/question-attachment-list";
 import { QuestionAttachment } from "../../enterprise/entities/question-attachment";
 import { UniqueEntityId } from "@/core/entities/unique-entity-id";
@@ -26,7 +26,7 @@ type EditQuestionResponse = Either<
 export class EditQuestionUseCase {
   constructor(
     private questionsRepository: QuestionsRepository,
-    private questionAttachmentRepository: QuestionAttachmentRepository
+    private questionAttachmentRepository: QuestionAttachmentsRepository
   ) {}
 
   async execute({
@@ -62,9 +62,9 @@ export class EditQuestionUseCase {
 
     questionAttachmentList.update(questionAttachments);
 
+    question.attachments = questionAttachmentList;
     question.title = title;
     question.content = content;
-    question.attachments = questionAttachmentList;
 
     await this.questionsRepository.save(question);
     return right({ question });
