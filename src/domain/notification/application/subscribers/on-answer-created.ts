@@ -32,7 +32,5 @@ export class OnAnswerCreated implements EventHandler {
         content: answer.excerpt,
       });
     }
-
-    console.log({ answer });
   }
 }

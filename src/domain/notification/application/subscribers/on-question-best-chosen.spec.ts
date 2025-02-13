@@ -1,5 +1,4 @@
 import { makeAnswer } from "test/factories/make-answer";
-import { OnAnswerCreated } from "./on-answer-created";
 import { InMemoryAnswersRepository } from "test/repositories/in-memory-anwsers-repository";
 import { InMemoryAnswerAttachmentsRepository } from "test/repositories/in-memory-answer-attachments-repository";
 import { InMemoryQuestionsRepository } from "test/repositories/in-memory-questions-repository";
@@ -13,6 +12,8 @@ import { InMemoryNotificationsRepository } from "test/repositories/in-memory-not
 import { makeQuestion } from "test/factories/make-questions";
 import { MockInstance } from "vitest";
 import { waitFor } from "test/utils/wait-for";
+import { OnQuestionAnswerBestChosen } from "./on-question-best-chosen";
+import { vi } from "vitest";
 
 let inMemoryQuestionsRepository: InMemoryQuestionsRepository;
 let inMemoryQuestionAttachmentsRepository: InMemoryQuestionAttachmentsRepository;
@@ -26,7 +27,7 @@ let sendNotificationExecuteSpy: MockInstance<
   Promise<SendNotificationResponse>
 >;
 
-describe("On answer created", () => {
+describe("On question best answer choosen", () => {
   beforeEach(() => {
     inMemoryAnswerAttachmentsRepository =
       new InMemoryAnswerAttachmentsRepository();
@@ -48,20 +49,25 @@ describe("On answer created", () => {
       inMemoryAnswerAttachmentsRepository
     );
 
-    //vai saber se foi disparado ou nao
-
     sendNotificationExecuteSpy = vi.spyOn(sendNotificationUseCase, "execute");
 
-    new OnAnswerCreated(inMemoryQuestionsRepository, sendNotificationUseCase);
+    new OnQuestionAnswerBestChosen(
+      inMemoryAnswersRepository,
+      sendNotificationUseCase
+    );
   });
 
-  it("should send a notification when an answer is created", async () => {
+  it("should send a notification when an new best answer is chosen", async () => {
     const question = makeQuestion();
 
     const answer = makeAnswer({ questionId: question.id });
 
     await inMemoryQuestionsRepository.create(question);
     await inMemoryAnswersRepository.create(answer);
+
+    question.bestAnswerId = answer.id;
+
+    inMemoryQuestionsRepository.save(question);
 
     await waitFor(() => {
       expect(sendNotificationExecuteSpy).toHaveBeenCalled();
