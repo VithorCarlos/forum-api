@@ -4,7 +4,7 @@ import { GetQuestionBySlugUseCase } from "./get-question-by-slug";
 
 import { makeQuestion } from "test/factories/make-questions";
 import { Slug } from "../../enterprise/entities/value-objects/slug";
-import { ResourceNotFoundError } from "./error/resource-not-found-error";
+import { ResourceNotFoundError } from "@/core/errors/error/resource-not-found-error";
 import { InMemoryQuestionAttachmentsRepository } from "test/repositories/in-memory-question-attachments-repository";
 
 let inMemoryQuestionsRepository: InMemoryQuestionsRepository;

@@ -1,17 +1,17 @@
-import { Either, left, right } from '@/core/either'
-import { AnswerCommentRepository } from '../repositories/answer-comment-repository'
-import { ResourceNotFoundError } from './error/resource-not-found-error'
-import { NotAllowedError } from './error/not-allowed-error'
+import { Either, left, right } from "@/core/either";
+import { AnswerCommentRepository } from "../repositories/answer-comment-repository";
+import { ResourceNotFoundError } from "@/core/errors/error/resource-not-found-error";
+import { NotAllowedError } from "@/core/errors/error/not-allowed-error";
 
 interface DeleteAnswerCommentRequest {
-  authorId: string
-  answerCommentId: string
+  authorId: string;
+  answerCommentId: string;
 }
 
 type DeleteAnswerCommentResponse = Either<
   ResourceNotFoundError | NotAllowedError,
   object
->
+>;
 
 export class DeleteAnswerCommentUseCase {
   constructor(private answersCommentRepository: AnswerCommentRepository) {}
@@ -21,18 +21,18 @@ export class DeleteAnswerCommentUseCase {
     answerCommentId,
   }: DeleteAnswerCommentRequest): Promise<DeleteAnswerCommentResponse> {
     const answerComment =
-      await this.answersCommentRepository.findById(answerCommentId)
+      await this.answersCommentRepository.findById(answerCommentId);
 
     if (!answerComment) {
-      return left(new ResourceNotFoundError())
+      return left(new ResourceNotFoundError());
     }
 
     if (answerComment.authorId.toString() !== authorId) {
-      return left(new NotAllowedError())
+      return left(new NotAllowedError());
     }
 
-    await this.answersCommentRepository.delete(answerComment)
+    await this.answersCommentRepository.delete(answerComment);
 
-    return right({})
+    return right({});
   }
 }
